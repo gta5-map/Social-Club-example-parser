@@ -1,9 +1,15 @@
 <?php
+// Require SimpleHTMLDOM library
 require('lib/simplehtmldom.php');
 
-// Rockstar Games credentials
-$username=$_GET['username'];
-$password=$_GET['password'];
+// Parse GET parameters
+if (isset($_GET['username']) && isset($_GET['password'])) {
+  $username=$_GET['username'];
+  $password=$_GET['password'];
+} else {
+  // If none, die
+  die("Error: make sure to pass \"username\" and \"password\" GET parameters!");
+}
 
 /*
  *  First HTTP request to parse and store RequestVerificationToken
