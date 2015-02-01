@@ -11,6 +11,13 @@ if (isset($_GET['username']) && isset($_GET['password'])) {
   die("Error: make sure to pass \"username\" and \"password\" GET parameters!");
 }
 
+// Use target GET parameter, if set
+if (isset($_GET['target'])) {
+  $target=$_GET['target'];
+} else {
+  // Otherwise, keep it empty
+  $target="";
+}
 /*
  *  First HTTP request to parse and store RequestVerificationToken
  */
@@ -53,7 +60,7 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 curl_setopt($ch, CURLOPT_ENCODING , "gzip");
 curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
-curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/games/gtav/career/overviewAjax?character=Freemode&nickname=Carats24&slot=Freemode&gamerHandle=&gamerTag=&_=1419694640015");
+curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/games/gtav/career/overviewAjax?character=Freemode&nickname=".$target."&slot=Freemode&gamerHandle=&gamerTag=&_=1419694640015");
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
   'Accept-Encoding: gzip, deflate',
   )
@@ -63,6 +70,7 @@ $buf3 = curl_exec ($ch);
 curl_close ($ch);
 unset($ch);
 
+// Return information
 echo "<PRE>".$buf3."</PRE>";
 
 ?>
