@@ -2,6 +2,9 @@
 // Require SimpleHTMLDOM library
 require('lib/simplehtmldom.php');
 
+// Set default timezone for date()
+date_default_timezone_set("Europe/Berlin");
+
 // Parse GET parameters
 if (isset($_GET['username']) && isset($_GET['password'])) {
   $username=$_GET['username'];
@@ -60,7 +63,7 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 curl_setopt($ch, CURLOPT_ENCODING , "gzip");
 curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
-curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/games/gtav/career/overviewAjax?character=Freemode&nickname=".$target."&slot=Freemode&gamerHandle=&gamerTag=&_=1419694640015");
+curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/games/gtav/career/overviewAjax?character=Freemode&nickname=".$target."&slot=Freemode&gamerHandle=&gamerTag=&_=".time()."000");
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
   'Accept-Encoding: gzip, deflate',
   )
