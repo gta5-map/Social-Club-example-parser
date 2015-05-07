@@ -66,7 +66,8 @@ curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
 curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/games/gtav/career/overviewAjax?character=Freemode&nickname=".$target."&slot=Freemode&gamerHandle=&gamerTag=&_=".time()."000");
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
   'Accept-Encoding: gzip, deflate',
-  )
+  ),
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE)
 );
 
 $buf3 = curl_exec ($ch);
