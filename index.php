@@ -37,8 +37,8 @@ if (isset($_GET['target'])) {
  */
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
 curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/");
+curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 curl_setopt($ch, CURLOPT_ENCODING , "");
 curl_setopt($ch, CURLOPT_HTTPHEADER,
@@ -60,11 +60,14 @@ $parsed_rvt = str_get_html($buf1)->find('input[name=__RequestVerificationToken]'
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
-curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
 curl_setopt($ch, CURLOPT_URL,"https://socialclub.rockstargames.com/profile/signin");
 curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, "login=".$username."&password=".$password."&__RequestVerificationToken=".$parsed_rvt);
+curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
+curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+curl_setopt($ch, CURLOPT_ENCODING , "");
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, "login=".$username."&password=".$password."&__RequestVerificationToken=".$parsed_rvt);
 curl_setopt($ch, CURLOPT_HTTPHEADER,
   array_merge(
     $defaultHeaders,
