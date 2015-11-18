@@ -64,10 +64,16 @@ curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
 curl_setopt($ch, CURLOPT_URL,"https://socialclub.rockstargames.com/profile/signin");
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, "login=".$username."&password=".$password."&__RequestVerificationToken=".$parsed_rvt);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-    'Content-Type: application/x-www-form-urlencoded'
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_HTTPHEADER,
+  array_merge(
+    $defaultHeaders,
+    array(
+      'Content-Type: application/x-www-form-urlencoded'
+    )
   )
 );
+
 
 $buf2 = curl_exec ($ch); // execute the curl command
 curl_close ($ch);
@@ -82,10 +88,14 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 curl_setopt($ch, CURLOPT_ENCODING , "gzip");
 curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
 curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/games/gtav/career/overviewAjax?character=Freemode&nickname=".$target."&slot=Freemode&gamerHandle=&gamerTag=&_=".time()."000");
-curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-  'Accept-Encoding: gzip, deflate',
-  ),
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE)
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+curl_setopt($ch, CURLOPT_HTTPHEADER,
+  array_merge(
+    $defaultHeaders,
+    array(
+      'Accept-Encoding: gzip, deflate',
+    )
+  )
 );
 
 $buf3 = curl_exec ($ch);
