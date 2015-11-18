@@ -13,6 +13,17 @@ if (isset($_GET['username']) && isset($_GET['password'])) {
   // If none, die
   die("Error: make sure to pass \"username\" and \"password\" GET parameters!");
 }
+$defaultHeaders = array(
+  'Pragma: no-cache',
+  'Accept-Encoding: gzip, deflate, sdch',
+  'Accept-Language: en-US,en;q=0.8,en-US;q=0.6,en;q=0.4',
+  'Upgrade-Insecure-Requests: 1',
+  'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2460.0 Safari/537.36',
+  'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'Cache-Control: no-cache',
+  'Connection: keep-alive'
+);
+
 
 // Use target GET parameter, if set
 if (isset($_GET['target'])) {
