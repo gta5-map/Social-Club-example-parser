@@ -40,6 +40,12 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
 curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+curl_setopt($ch, CURLOPT_HTTPHEADER,
+  array_merge(
+    $defaultHeaders
+  )
+);
+
 $buf1 = curl_exec($ch);
 curl_close ($ch);
 unset($ch);
