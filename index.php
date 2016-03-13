@@ -187,3 +187,6 @@ if (checkForEmptyData($data)) {
   // ... otherwise just return the valid data
   echo $data;
 }
+
+// Exit without errors
+exit(0);
