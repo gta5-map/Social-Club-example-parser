@@ -48,4 +48,4 @@ $ php index.php RestlessNarwhal
 
 ## Version
 
-1.1
+1.2
