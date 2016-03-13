@@ -23,4 +23,4 @@ Simple example parser for Rockstar's Social Club written in PHP that makes use o
 
 ## Version
 
-1.0
+1.1
