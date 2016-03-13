@@ -17,6 +17,137 @@ $defaultHeaders = array(
   'Connection: keep-alive'
 );
 
+/* Functions */
+
+/**
+ * Check for existing cookie jar
+ * @return {BOOL}
+ */
+function checkExistingCookieJar(){
+  return (file_exists('cookie_jar.txt')) ? true : false;
+}
+
+/**
+ * Check input string for possible captcha
+ * @param {String} $input
+ * @return {BOOL}
+ */
+function checkForCaptchaRequest($input){
+  if (strpos($input, "showRecaptcha: true")) {
+    die('Captcha request detected. Sign into SocialClub using a desktop browser from this machine to please ReCaptcha. Then retry using this parser.');
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Check for empty data
+ * @param {String} $input
+ * @return {BOOL}
+ */
+function checkForEmptyData($input){
+  if (strpos($input, "Play Time: 0h 0m 0s")) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Function to sign into SocialClub and store the authorized
+ * cookie in our cookie jar
+ * @return {Bool} State of authentication
+ */
+function renewAuthentication() {
+  global $defaultHeaders, $username, $password;
+  /* Request to parse __RequestVerificationToken */
+
+  // Initiate curl request
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/");
+  curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+  curl_setopt($ch, CURLOPT_ENCODING , "");
+  curl_setopt($ch, CURLOPT_HTTPHEADER,
+    array_merge(
+      $defaultHeaders
+    )
+  );
+
+  // Store buffer and unset curl variables
+  $buffer = curl_exec($ch);
+  curl_close ($ch);
+  unset($ch);
+
+  // Store __RequestVerificationToken
+  $parsed_rvt = str_get_html($buffer)->find('input[name=__RequestVerificationToken]', 0)->value;
+
+  /* Request to sign in and store authorization cookie */
+
+  // Initiate curl request
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
+  curl_setopt($ch, CURLOPT_URL,"https://socialclub.rockstargames.com/profile/signin");
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
+  curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+  curl_setopt($ch, CURLOPT_ENCODING , "");
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, "login=".$username."&password=".$password."&__RequestVerificationToken=".$parsed_rvt);
+  curl_setopt($ch, CURLOPT_HTTPHEADER,
+    array_merge(
+      $defaultHeaders,
+      array(
+        'Content-Type: application/x-www-form-urlencoded'
+      )
+    )
+  );
+
+  // Store buffer and unset curl variables
+  $buffer = curl_exec ($ch);
+  curl_close ($ch);
+  unset($ch);
+
+  // Check if there is no captcha request by R*
+  if (!checkForCaptchaRequest($buffer)) {
+    return true;
+  }
+}
+
+/**
+ * Function to request to get actual informations using
+ * authorized session in the cookie file
+ * @return {String} SocialClub response
+ */
+function parseActualInformation(){
+  global $target, $defaultHeaders;
+
+  // Initiate curl request
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+  curl_setopt($ch, CURLOPT_ENCODING , "gzip");
+  curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
+  curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/games/gtav/career/overviewAjax?character=Freemode&nickname=".$target."&slot=Freemode&gamerHandle=&gamerTag=&_=".time()."000");
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+  curl_setopt($ch, CURLOPT_HTTPHEADER,
+    array_merge(
+      $defaultHeaders,
+      array(
+        'Accept-Encoding: gzip, deflate',
+      )
+    )
+  );
+  $buffer = curl_exec ($ch);
+  curl_close ($ch);
+  unset($ch);
+
+  return $buffer;
+}
+
+/* Core */
+
 // Check for config file
 if (!file_exists('config.json')) {
   die('Error: No configuration file found. Make sure to copy the default one to \'config.json\'');
@@ -31,84 +162,23 @@ $password = $config->password;
 // Check for possible "target" argument
 $target = (isset($argv[1])) ? $argv[1] : "";
 
-/*
- * First HTTP request to parse and store RequestVerificationToken
- */
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/");
-curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-curl_setopt($ch, CURLOPT_ENCODING , "");
-curl_setopt($ch, CURLOPT_HTTPHEADER,
-  array_merge(
-    $defaultHeaders
-  )
-);
-
-$buf1 = curl_exec($ch);
-curl_close ($ch);
-unset($ch);
-
-// Store __RequestVerificationToken
-$parsed_rvt = str_get_html($buf1)->find('input[name=__RequestVerificationToken]', 0)->value;
-
-/*
- * Second request to sign in using RequestVerificationToken
- */
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
-curl_setopt($ch, CURLOPT_URL,"https://socialclub.rockstargames.com/profile/signin");
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
-curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-curl_setopt($ch, CURLOPT_ENCODING , "");
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, "login=".$username."&password=".$password."&__RequestVerificationToken=".$parsed_rvt);
-curl_setopt($ch, CURLOPT_HTTPHEADER,
-  array_merge(
-    $defaultHeaders,
-    array(
-      'Content-Type: application/x-www-form-urlencoded'
-    )
-  )
-);
-
-$buf2 = curl_exec ($ch); // execute the curl command
-curl_close ($ch);
-unset($ch);
-
-// Check if ReCaptcha tampers into our sign in request
-if (strpos($buf2, "showRecaptcha: true")) {
-  die('Captcha request detected. Sign into SocialClub using a desktop browser from this machine to please ReCaptcha. Then retry using this parser.');
+// Authenticate if there is no cookie jar file
+if (!checkExistingCookieJar()){
+  renewAuthentication();
 }
 
-/*
- * Third request to get actual informations using authorized cookie file
- */
+// Try to parse data using existing cookie file
+$data = parseActualInformation();
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-curl_setopt($ch, CURLOPT_ENCODING , "gzip");
-curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie_jar.txt");
-curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/games/gtav/career/overviewAjax?character=Freemode&nickname=".$target."&slot=Freemode&gamerHandle=&gamerTag=&_=".time()."000");
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-curl_setopt($ch, CURLOPT_HTTPHEADER,
-  array_merge(
-    $defaultHeaders,
-    array(
-      'Accept-Encoding: gzip, deflate',
-    )
-  )
-);
-
-$buf3 = curl_exec ($ch);
-curl_close ($ch);
-unset($ch);
-
-// Return information
-echo "<PRE>".$buf3."</PRE>";
-
-?>
+// If the string contains empty/fake data ...
+if (checkForEmptyData($data)) {
+  // ... try to renew the authentication
+  if (renewAuthentication()) {
+    // ... and actually parse the informations again
+    $data = parseActualInformation();
+    echo $data;
+  }
+} else {
+  // ... otherwise just return the valid data
+  echo $data;
+}
