@@ -8,14 +8,23 @@ Simple example parser for Rockstar's Social Club written in PHP that makes use o
 1. Clone repository:  
   `git clone https://github.com/gta5-map/SocialClub-example-parser.git`  
   `cd SocialClub-example-parser`
-1. Start PHP server (in case you have PHP 5.5 or up):  
-  `php -S 127.0.0.1:8080`
-1. Open a browser and navigate to:  
-  http://127.0.0.1:8080/index.php?username=[SC_USERNAME]&password=[SC_PASSWORD] 
+1. Copy and adjust the config file:  
+  `cp config.default.json config.json`  
+  `vi config.json`  
 
-  or incase you want to target another player:  
+## Usage
 
-  http://127.0.0.1:8080/index.php?username=[SC_USERNAME]&password=[SC_PASSWORD]&target=RestlessNarwhal
+Execute the parser via terminal like this:  
+
+```shell
+$ php index.php 
+```
+
+... or incase you want to target another player:  
+
+```shell
+$ php index.php RestlessNarwhal 
+```
 
 ## License
 
