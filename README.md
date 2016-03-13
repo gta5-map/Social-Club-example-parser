@@ -28,7 +28,7 @@ $ php index.php RestlessNarwhal
 
 ## License
 
-[WTFPL](LICENSE)
+[MIT](LICENSE)
 
 ## Version
 
