@@ -33,6 +33,27 @@ function debug($msg){
 }
 
 /**
+ * Function to print out possible trace
+ * information and prepend a [TRACE]
+ * prefix.
+ * @param  {String} $msg input message
+ */
+function trace($msg){
+  global $config;
+
+  if ($config->trace) {
+    $arr = explode("\n", $msg);
+
+    foreach ($arr as $key => $value) {
+      $arr[$key] = '[TRACE] ' . $arr[$key];
+    }
+
+    $msg = implode(PHP_EOL, $arr);
+    echo($msg);
+  }
+}
+
+/**
  * Function to die in case of possible errors.
  * @param  {String} $msg input message
  */
@@ -65,6 +86,9 @@ function checkExistingCookieJar(){
 function checkForCaptchaRequest($input){
   if (strpos($input, "showRecaptcha: true")) {
     debug('[checkForCaptchaRequest] Captcha request in $input variable detected.');
+    trace('[checkForCaptchaRequest] <!-- START -->');
+    trace('[checkForCaptchaRequest] '.$input);
+    trace('[checkForCaptchaRequest] <!-- STOP -->');
     error('[checkForCaptchaRequest] Captcha request detected. Sign into SocialClub using a desktop browser from this machine to please ReCaptcha. Then retry using this parser.');
     return true;
   } else {
@@ -72,6 +96,9 @@ function checkForCaptchaRequest($input){
     // Check for possible login errors
     if (strpos($input, "gError = 'There has been an error, please retry!'")) {
       debug('[checkForCaptchaRequest] Found an unexpected error in $input variable.');
+      trace('[checkForCaptchaRequest] <!-- START -->');
+      trace('[checkForCaptchaRequest] '.$input);
+      trace('[checkForCaptchaRequest] <!-- STOP -->');
       error('[checkForCaptchaRequest] Unexpected error. Wrong credentials?');
       return true;
     } else {

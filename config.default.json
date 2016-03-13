@@ -1,5 +1,6 @@
 {
-  "debug": false,
+  "debug": true,
+  "trace": false,
   "username": "SC_username",
   "password": "SC_password"
 }
