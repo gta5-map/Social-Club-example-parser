@@ -17,22 +17,19 @@ $defaultHeaders = array(
   'Connection: keep-alive'
 );
 
-// Check for mandatory GET parameters
-if (isset($_GET['username']) && isset($_GET['password'])) {
-  $username=$_GET['username'];
-  $password=$_GET['password'];
+// Check for config file
+if (!file_exists('config.json')) {
+  die('Error: No configuration file found. Make sure to copy the default one to \'config.json\'');
 } else {
-  // If none, die
-  die("Error: make sure to pass \"username\" and \"password\" GET parameters!");
+  $config = json_decode(file_get_contents('config.json'));
 }
 
-// Check for possible "target" GET parameter
-if (isset($_GET['target'])) {
-  $target=$_GET['target'];
-} else {
-  // Otherwise, keep it empty
-  $target="";
-}
+// Load credentials from config
+$username = $config->username;
+$password = $config->password;
+
+// Check for possible "target" argument
+$target = (isset($argv[1])) ? $argv[1] : "";
 
 /*
  * First HTTP request to parse and store RequestVerificationToken
