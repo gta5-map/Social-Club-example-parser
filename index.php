@@ -20,12 +20,39 @@ $defaultHeaders = array(
 /* Functions */
 
 /**
+ * Function to print out possible debug
+ * information.
+ * @param  {String} $msg input message
+ */
+function debug($msg){
+  global $config;
+
+  if ($config->debug) {
+    echo('[DEBUG] ' . $msg . PHP_EOL);
+  }
+}
+
+/**
+ * Function to die in case of possible errors.
+ * @param  {String} $msg input message
+ */
+function error($msg){
+  die('[ERROR] ' . $msg . PHP_EOL);
+}
+
+/**
  * Check for existing cookie jar, will return
  * 'true' if the file is found.
  * @return {BOOL}
  */
 function checkExistingCookieJar(){
-  return (file_exists('cookie_jar.txt')) ? true : false;
+  if (file_exists('cookie_jar.txt')) {
+    debug('[checkExistingCookieJar] Found existing cookie file.');
+    return true;
+  } else {
+    debug('[checkExistingCookieJar] Couldn\'t find existing cookie file.');
+    return false;
+  }
 }
 
 /**
@@ -37,9 +64,11 @@ function checkExistingCookieJar(){
  */
 function checkForCaptchaRequest($input){
   if (strpos($input, "showRecaptcha: true")) {
-    die('Captcha request detected. Sign into SocialClub using a desktop browser from this machine to please ReCaptcha. Then retry using this parser.');
+    debug('[checkForCaptchaRequest] Captcha request detected. Dying...');
+    error('Captcha request detected. Sign into SocialClub using a desktop browser from this machine to please ReCaptcha. Then retry using this parser.');
     return true;
   } else {
+    debug('[checkForCaptchaRequest] No captcha request detected.');
     return false;
   }
 }
@@ -52,8 +81,10 @@ function checkForCaptchaRequest($input){
  */
 function checkForEmptyData($input){
   if (strpos($input, "Play Time: 0h 0m 0s")) {
+    debug('[checkForEmptyData] Empty/fake data detected.');
     return true;
   } else {
+    debug('[checkForEmptyData] No empty/fake data detected.');
     return false;
   }
 }
@@ -69,6 +100,7 @@ function renewAuthentication() {
   /* Request to parse __RequestVerificationToken */
 
   // Initiate curl request
+  debug('[renewAuthentication] Sending request to parse the login form.');
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL,"http://socialclub.rockstargames.com/");
   curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
@@ -87,10 +119,12 @@ function renewAuthentication() {
 
   // Store __RequestVerificationToken
   $parsed_rvt = str_get_html($buffer)->find('input[name=__RequestVerificationToken]', 0)->value;
+  debug('[renewAuthentication] Received RequestVerificationToken: \''.$parsed_rvt.'\'.');
 
   /* Request to sign in and store authorization cookie */
 
   // Initiate curl request
+  debug('[renewAuthentication] Sending authentication request.');
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie_jar.txt");
   curl_setopt($ch, CURLOPT_URL,"https://socialclub.rockstargames.com/profile/signin");
@@ -117,6 +151,7 @@ function renewAuthentication() {
 
   // Check if there is no captcha request by R*
   if (!checkForCaptchaRequest($buffer)) {
+    debug('[renewAuthentication] Successfuly authenticated.');
     return true;
   }
 }
@@ -130,6 +165,7 @@ function parseActualInformation(){
   global $target, $defaultHeaders;
 
   // Initiate curl request
+  debug('[parseActualInformation] Sending request to parse actual data.');
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
   curl_setopt($ch, CURLOPT_ENCODING , "gzip");
@@ -155,9 +191,10 @@ function parseActualInformation(){
 
 // Check for config file
 if (!file_exists('config.json')) {
-  die('Error: No configuration file found. Make sure to copy the default one to \'config.json\'');
+  error('Error: No configuration file found. Make sure to copy the default one to \'config.json\'');
 } else {
   $config = json_decode(file_get_contents('config.json'));
+  debug('Configuration file loaded.');
 }
 
 // Load credentials from config
