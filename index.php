@@ -20,7 +20,8 @@ $defaultHeaders = array(
 /* Functions */
 
 /**
- * Check for existing cookie jar
+ * Check for existing cookie jar, will return
+ * 'true' if the file is found.
  * @return {BOOL}
  */
 function checkExistingCookieJar(){
@@ -28,7 +29,9 @@ function checkExistingCookieJar(){
 }
 
 /**
- * Check input string for possible captcha
+ * Check input string for possible captcha, will
+ * return 'false' if there was no captacha request
+ * detected, otherwise it'll die with an error msg.
  * @param {String} $input
  * @return {BOOL}
  */
@@ -42,7 +45,8 @@ function checkForCaptchaRequest($input){
 }
 
 /**
- * Check for empty data
+ * Check for empty data, will return 'true'
+ * if empty/fake data was detected
  * @param {String} $input
  * @return {BOOL}
  */
@@ -56,7 +60,8 @@ function checkForEmptyData($input){
 
 /**
  * Function to sign into SocialClub and store the authorized
- * cookie in our cookie jar
+ * cookie in our cookie jar. Will return 'true' if the
+ * authentication was successful.
  * @return {Bool} State of authentication
  */
 function renewAuthentication() {
