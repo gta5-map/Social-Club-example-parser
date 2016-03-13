@@ -26,6 +26,22 @@ $ php index.php
 $ php index.php RestlessNarwhal 
 ```
 
+## Configuration
+
+```json
+{
+  "debug": true,
+  "trace": false,
+  "username": "SC_username",
+  "password": "SC_password"
+}
+```
+
+- `debug` - can be set to `true` or `false` - Display debug information
+- `trace` - can be set to `true` or `false` - Display more detailed information
+- `username` - must be a string - Should contain your SocialClub username
+- `password` - must be a string - Should contain your SocialClub password
+
 ## License
 
 [MIT](LICENSE)
