@@ -5,14 +5,7 @@ require('lib/simplehtmldom.php');
 // Set default timezone for date()
 date_default_timezone_set("Europe/Berlin");
 
-// Parse GET parameters
-if (isset($_GET['username']) && isset($_GET['password'])) {
-  $username=$_GET['username'];
-  $password=$_GET['password'];
-} else {
-  // If none, die
-  die("Error: make sure to pass \"username\" and \"password\" GET parameters!");
-}
+// Set default headers
 $defaultHeaders = array(
   'Pragma: no-cache',
   'Accept-Encoding: gzip, deflate, sdch',
@@ -24,16 +17,25 @@ $defaultHeaders = array(
   'Connection: keep-alive'
 );
 
+// Check for mandatory GET parameters
+if (isset($_GET['username']) && isset($_GET['password'])) {
+  $username=$_GET['username'];
+  $password=$_GET['password'];
+} else {
+  // If none, die
+  die("Error: make sure to pass \"username\" and \"password\" GET parameters!");
+}
 
-// Use target GET parameter, if set
+// Check for possible "target" GET parameter
 if (isset($_GET['target'])) {
   $target=$_GET['target'];
 } else {
   // Otherwise, keep it empty
   $target="";
 }
+
 /*
- *  First HTTP request to parse and store RequestVerificationToken
+ * First HTTP request to parse and store RequestVerificationToken
  */
 
 $ch = curl_init();
@@ -55,7 +57,7 @@ unset($ch);
 $parsed_rvt = str_get_html($buf1)->find('input[name=__RequestVerificationToken]', 0)->value;
 
 /*
- *  Second request to sign in using RequestVerificationToken
+ * Second request to sign in using RequestVerificationToken
  */
 
 $ch = curl_init();
@@ -77,13 +79,12 @@ curl_setopt($ch, CURLOPT_HTTPHEADER,
   )
 );
 
-
 $buf2 = curl_exec ($ch); // execute the curl command
 curl_close ($ch);
 unset($ch);
 
 /*
- *  Third request to get actual informations using authorized cookie file
+ * Third request to get actual informations using authorized cookie file
  */
 
 $ch = curl_init();
