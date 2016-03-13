@@ -83,6 +83,11 @@ $buf2 = curl_exec ($ch); // execute the curl command
 curl_close ($ch);
 unset($ch);
 
+// Check if ReCaptcha tampers into our sign in request
+if (strpos($buf2, "showRecaptcha: true")) {
+  die('Captcha request detected. Sign into SocialClub using a desktop browser from this machine to please ReCaptcha. Then retry using this parser.');
+}
+
 /*
  * Third request to get actual informations using authorized cookie file
  */
