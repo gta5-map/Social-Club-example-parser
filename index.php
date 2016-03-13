@@ -64,12 +64,19 @@ function checkExistingCookieJar(){
  */
 function checkForCaptchaRequest($input){
   if (strpos($input, "showRecaptcha: true")) {
-    debug('[checkForCaptchaRequest] Captcha request detected. Dying...');
-    error('Captcha request detected. Sign into SocialClub using a desktop browser from this machine to please ReCaptcha. Then retry using this parser.');
+    debug('[checkForCaptchaRequest] Captcha request in $input variable detected.');
+    error('[checkForCaptchaRequest] Captcha request detected. Sign into SocialClub using a desktop browser from this machine to please ReCaptcha. Then retry using this parser.');
     return true;
   } else {
     debug('[checkForCaptchaRequest] No captcha request detected.');
-    return false;
+    // Check for possible login errors
+    if (strpos($input, "gError = 'There has been an error, please retry!'")) {
+      debug('[checkForCaptchaRequest] Found an unexpected error in $input variable.');
+      error('[checkForCaptchaRequest] Unexpected error. Wrong credentials?');
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
