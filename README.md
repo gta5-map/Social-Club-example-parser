@@ -149,7 +149,7 @@ $ php index.php RestlessNarwhal
 
 ```json
 {
-  "debug": true,
+  "debug": false,
   "trace": false,
   "username": "SC_username",
   "password": "SC_password"
