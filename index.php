@@ -253,16 +253,15 @@ function calculateProgressbarStats($domData, $statsType){
  */
 function getRecentActivity($domData){
   // Store partial DOM
-  $activites = str_get_html($domData)->find('#recentActivity ul li');
+  $activities = str_get_html($domData)->find('#recentActivity ul li[data-type=award]');
   $array = [];
 
-  // For each found activity
-  for ($i=0; $i < count((array)$activites); $i++) {
-    // Parse information
+  foreach($activities as $activity) {
+     // Parse information
     $subArray = array(
-      'name' => $activites[$i]->{'data-name'},
-      'type' => $activites[$i]->{'data-award'},
-      'image' => $activites[$i]->find('img', 0)->src
+      'name' => $activity->{'data-name'},
+      'type' => $activity->{'data-award'},
+      'image' => $activity->find('img', 0)->src
     );
     // And store in main $array
     array_push($array, $subArray);
