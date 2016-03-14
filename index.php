@@ -252,12 +252,11 @@ if (checkForEmptyData($data)) {
   if (renewAuthentication()) {
     // ... and actually parse the informations again
     $data = parseActualInformation();
-    echo $data;
   }
-} else {
-  // ... otherwise just return the valid data
-  echo $data;
 }
+
+// Print out stored
+echo $data;
 
 // Exit without errors
 exit(0);
