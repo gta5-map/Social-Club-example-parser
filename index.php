@@ -399,9 +399,7 @@ $parsed = array(
     'accuracy' => str_replace('%', '', str_get_html($data)->find('h5[plaintext^=Accuracy]', 0)->next_sibling()->plaintext),
     'time-held' => str_get_html($data)->find('h5[plaintext^=Time held]', 0)->next_sibling()->plaintext
   ),
-  'recent-activity' => array(
-    getRecentActivity($data)
-  )
+  'recent-activity' => getRecentActivity($data)
 );
 
 // Print out stored

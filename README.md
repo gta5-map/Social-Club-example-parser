@@ -124,7 +124,7 @@ $ php index.php RestlessNarwhal
     "time-held": "44:03:02"
   },
   "recent-activity": [
-    [{
+    {
       "name": "The Widow Maker",
       "type": "Platinum",
       "image": "http:\/\/cdn.sc.rockstargames.com\/images\/games\/GTAV\/multiplayer\/award\/platinum\/OverallKills.png"
@@ -140,7 +140,7 @@ $ php index.php RestlessNarwhal
       "name": "Death Toll",
       "type": "Silver",
       "image": "http:\/\/cdn.sc.rockstargames.com\/images\/games\/GTAV\/multiplayer\/award\/silver\/TotalKills.png"
-    }]
+    }
   ]
 }
 ```
