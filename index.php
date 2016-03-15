@@ -241,9 +241,9 @@ function getRecentActivity($domData){
   foreach($activities as $activity) {
      // Parse information
     $subArray = array(
-      'name' => $activity->{'data-name'},
-      'type' => $activity->{'data-award'},
-      'image' => $activity->find('img', 0)->src
+      'name' => (string)$activity->{'data-name'},
+      'type' => (string)$activity->{'data-award'},
+      'image' => (string)$activity->find('img', 0)->src
     );
     // And store in main $array
     array_push($array, $subArray);
@@ -309,97 +309,97 @@ if (checkForEmptyData($data)) {
 
 $parsed = array(
   'general' => array(
-    'rank' => str_get_html($data)->find('.rankHex h3', 0)->innertext,
-    'xp' => str_replace(' RP ', '', str_get_html($data)->find('.rankXP .clearfix .left', 0)->plaintext),
-    'play-time' => str_replace('Play Time: ', '', str_get_html($data)->find('.rankBar h4', 0)->innertext),
+    'rank' => (int)str_get_html($data)->find('.rankHex h3', 0)->innertext,
+    'xp' => (string)str_replace(' RP ', '', str_get_html($data)->find('.rankXP .clearfix .left', 0)->plaintext),
+    'play-time' => (string)str_replace('Play Time: ', '', str_get_html($data)->find('.rankBar h4', 0)->innertext),
     'money' => array(
-      'cash' => str_get_html($data)->find('#cash-value', 0)->innertext,
-      'bank' => str_get_html($data)->find('#bank-value', 0)->innertext
+      'cash' => (string)str_get_html($data)->find('#cash-value', 0)->innertext,
+      'bank' => (string)str_get_html($data)->find('#bank-value', 0)->innertext
     )
   ),
   'crew' => array(
-    'name' => str_get_html($data)->find('.crewCard .clearfix .left h3 a', 0)->plaintext,
-    'tag' => trim(str_get_html($data)->find('.crewCard .clearfix .left .crewTag span', 0)->plaintext),
-    'emblem' => str_get_html($data)->find('.crewCard .clearfix .avatar', 0)->src
+    'name' => (string)str_get_html($data)->find('.crewCard .clearfix .left h3 a', 0)->plaintext,
+    'tag' => (string)trim(str_get_html($data)->find('.crewCard .clearfix .left .crewTag span', 0)->plaintext),
+    'emblem' => (string)str_get_html($data)->find('.crewCard .clearfix .avatar', 0)->src
   ),
   'freemode' => array(
     'races' => array(
-      'wins' => str_get_html($data)->find('p[data-name=Races]', 0)->{'data-win'},
-      'losses' => str_get_html($data)->find('p[data-name=Races]', 0)->{'data-loss'},
-      'time' => str_get_html($data)->find('p[data-name=Races]', 0)->{'data-extra'}
+      'wins' => (int)str_get_html($data)->find('p[data-name=Races]', 0)->{'data-win'},
+      'losses' => (int)str_get_html($data)->find('p[data-name=Races]', 0)->{'data-loss'},
+      'time' => (string)str_get_html($data)->find('p[data-name=Races]', 0)->{'data-extra'}
     ),
     'deathmatches' => array(
-      'wins' => str_get_html($data)->find('p[data-name=Deathmatches]', 0)->{'data-win'},
-      'losses' => str_get_html($data)->find('p[data-name=Deathmatches]', 0)->{'data-loss'},
-      'time' => str_get_html($data)->find('p[data-name=Deathmatches]', 0)->{'data-extra'}
+      'wins' => (int)str_get_html($data)->find('p[data-name=Deathmatches]', 0)->{'data-win'},
+      'losses' => (int)str_get_html($data)->find('p[data-name=Deathmatches]', 0)->{'data-loss'},
+      'time' => (string)str_get_html($data)->find('p[data-name=Deathmatches]', 0)->{'data-extra'}
     ),
     'parachuting' => array(
-      'wins' => str_get_html($data)->find('p[data-name=Parachuting]', 0)->{'data-win'},
-      'losses' => str_get_html($data)->find('p[data-name=Parachuting]', 0)->{'data-loss'},
-      'perfect-landing' => str_get_html($data)->find('p[data-name=Parachuting]', 0)->{'data-extra'}
+      'wins' => (int)str_get_html($data)->find('p[data-name=Parachuting]', 0)->{'data-win'},
+      'losses' => (int)str_get_html($data)->find('p[data-name=Parachuting]', 0)->{'data-loss'},
+      'perfect-landing' => (int)str_get_html($data)->find('p[data-name=Parachuting]', 0)->{'data-extra'}
     ),
     'darts' => array(
-      'wins' => str_get_html($data)->find('p[data-name=Darts]', 0)->{'data-win'},
-      'losses' => str_get_html($data)->find('p[data-name=Darts]', 0)->{'data-loss'},
-      'six-darter' => str_get_html($data)->find('p[data-name=Darts]', 0)->{'data-extra'}
+      'wins' => (int)str_get_html($data)->find('p[data-name=Darts]', 0)->{'data-win'},
+      'losses' => (int)str_get_html($data)->find('p[data-name=Darts]', 0)->{'data-loss'},
+      'six-darter' => (int)str_get_html($data)->find('p[data-name=Darts]', 0)->{'data-extra'}
     ),
     'tennis' => array(
-      'wins' => str_get_html($data)->find('p[data-name=Tennis]', 0)->{'data-win'},
-      'losses' => str_get_html($data)->find('p[data-name=Tennis]', 0)->{'data-loss'},
-      'aces' => str_get_html($data)->find('p[data-name=Tennis]', 0)->{'data-extra'}
+      'wins' => (int)str_get_html($data)->find('p[data-name=Tennis]', 0)->{'data-win'},
+      'losses' => (int)str_get_html($data)->find('p[data-name=Tennis]', 0)->{'data-loss'},
+      'aces' => (int)str_get_html($data)->find('p[data-name=Tennis]', 0)->{'data-extra'}
     ),
     'golf' => array(
-      'wins' => str_get_html($data)->find('p[data-name=Golf]', 0)->{'data-win'},
-      'losses' => str_get_html($data)->find('p[data-name=Golf]', 0)->{'data-loss'},
-      'hole-in-one' => str_get_html($data)->find('p[data-name=Golf]', 0)->{'data-extra'}
+      'wins' => (int)str_get_html($data)->find('p[data-name=Golf]', 0)->{'data-win'},
+      'losses' => (int)str_get_html($data)->find('p[data-name=Golf]', 0)->{'data-loss'},
+      'hole-in-one' => (bool)(str_get_html($data)->find('p[data-name=Golf]', 0)->{'data-extra'} === 'No') ? false : true,
     ),
   ),
   'money' => array(
     'total' => array(
-      'spent' => str_get_html($data)->find('#cashSpent p', 0)->plaintext,
-      'earned' => str_get_html($data)->find('#cashEarned p', 0)->plaintext
+      'spent' => (string)str_get_html($data)->find('#cashSpent p', 0)->plaintext,
+      'earned' => (string)str_get_html($data)->find('#cashEarned p', 0)->plaintext
     ),
     'earnedby' => array(
-      'jobs' => str_get_html($data)->find('.cash-val[data-name=Jobs]', 0)->{'data-cash'},
-      'shared' => str_get_html($data)->find('.cash-val[data-name=Shared]', 0)->{'data-cash'},
-      'betting' => str_get_html($data)->find('.cash-val[data-name=Betting]', 0)->{'data-cash'},
-      'car-sales' => str_get_html($data)->find('.cash-val[data-name=Car Sales]', 0)->{'data-cash'},
-      'picked-up' => str_get_html($data)->find('.cash-val[data-name=Picked Up]', 0)->{'data-cash'},
-      'other' => str_get_html($data)->find('.cash-val[data-name=Other]', 0)->{'data-cash'}
+      'jobs' => (string)str_get_html($data)->find('.cash-val[data-name=Jobs]', 0)->{'data-cash'},
+      'shared' => (string)str_get_html($data)->find('.cash-val[data-name=Shared]', 0)->{'data-cash'},
+      'betting' => (string)str_get_html($data)->find('.cash-val[data-name=Betting]', 0)->{'data-cash'},
+      'car-sales' => (string)str_get_html($data)->find('.cash-val[data-name=Car Sales]', 0)->{'data-cash'},
+      'picked-up' => (string)str_get_html($data)->find('.cash-val[data-name=Picked Up]', 0)->{'data-cash'},
+      'other' => (string)str_get_html($data)->find('.cash-val[data-name=Other]', 0)->{'data-cash'}
     )
   ),
   'stats' => array(
-    'stamina' => calculateProgressbarStats($data, 'Stamina'),
-    'stealth' => calculateProgressbarStats($data, 'Stealth'),
-    'lung-capacity' => calculateProgressbarStats($data, 'Lung Capacity'),
-    'flying' => calculateProgressbarStats($data, 'Flying'),
-    'shooting' => calculateProgressbarStats($data, 'Shooting'),
-    'strength' => calculateProgressbarStats($data, 'Strength'),
-    'driving' => calculateProgressbarStats($data, 'Driving'),
-    'mental-state' => calculateProgressbarStats($data, 'Mental State')
+    'stamina' => (int)calculateProgressbarStats($data, 'Stamina'),
+    'stealth' => (int)calculateProgressbarStats($data, 'Stealth'),
+    'lung-capacity' => (int)calculateProgressbarStats($data, 'Lung Capacity'),
+    'flying' => (int)calculateProgressbarStats($data, 'Flying'),
+    'shooting' => (int)calculateProgressbarStats($data, 'Shooting'),
+    'strength' => (int)calculateProgressbarStats($data, 'Strength'),
+    'driving' => (int)calculateProgressbarStats($data, 'Driving'),
+    'mental-state' => (int)calculateProgressbarStats($data, 'Mental State')
   ),
   'criminalrecord' => array(
-    'cops-killed' => str_get_html($data)->find('h5[plaintext^=Cops killed]', 0)->next_sibling()->plaintext,
-    'wanted-stars' => str_get_html($data)->find('h5[plaintext^=Wanted stars attained]', 0)->next_sibling()->plaintext,
-    'time-wanted' => str_get_html($data)->find('h5[plaintext^=Time Wanted]', 0)->next_sibling()->plaintext,
-    'stolen-vehicles' => str_get_html($data)->find('h5[plaintext^=Vehicles Stolen]', 0)->next_sibling()->plaintext,
-    'cars-exported' => str_get_html($data)->find('h5[plaintext^=Cars Exported]', 0)->next_sibling()->plaintext,
-    'store-holdups' => str_get_html($data)->find('h5[plaintext^=Store Hold Ups]', 0)->next_sibling()->plaintext
+    'cops-killed' => (string)str_get_html($data)->find('h5[plaintext^=Cops killed]', 0)->next_sibling()->plaintext,
+    'wanted-stars' => (string)str_get_html($data)->find('h5[plaintext^=Wanted stars attained]', 0)->next_sibling()->plaintext,
+    'time-wanted' => (string)str_get_html($data)->find('h5[plaintext^=Time Wanted]', 0)->next_sibling()->plaintext,
+    'stolen-vehicles' => (string)str_get_html($data)->find('h5[plaintext^=Vehicles Stolen]', 0)->next_sibling()->plaintext,
+    'cars-exported' => (string)str_get_html($data)->find('h5[plaintext^=Cars Exported]', 0)->next_sibling()->plaintext,
+    'store-holdups' => (string)str_get_html($data)->find('h5[plaintext^=Store Hold Ups]', 0)->next_sibling()->plaintext
   ),
   'favourite-weapon' => array(
-    'name' => str_get_html($data)->find('#faveWeaponWrapper .imageHolder h4', 0)->plaintext,
-    'image' => str_get_html($data)->find('#faveWeaponWrapper .imageHolder img', 0)->src,
+    'name' => (string)str_get_html($data)->find('#faveWeaponWrapper .imageHolder h4', 0)->plaintext,
+    'image' => (string)str_get_html($data)->find('#faveWeaponWrapper .imageHolder img', 0)->src,
     'stats' => array(
-      'damage' => str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 0)->plaintext),
-      'fire-rate' => str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 1)->plaintext),
-      'accuracy' => str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 2)->plaintext),
-      'range' => str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 3)->plaintext),
-      'clip-size' => str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 4)->plaintext)
+      'damage' => (int)str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 0)->plaintext),
+      'fire-rate' => (int)str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 1)->plaintext),
+      'accuracy' => (int)str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 2)->plaintext),
+      'range' => (int)str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 3)->plaintext),
+      'clip-size' => (int)str_replace('% ', '', str_get_html($data)->find('.weaponStats tr span', 4)->plaintext)
     ),
-    'kills' => str_get_html($data)->find('h5[plaintext^=Kills]', 0)->next_sibling()->plaintext,
-    'headshots' => str_get_html($data)->find('h5[plaintext^=Headshots]', 0)->next_sibling()->plaintext,
-    'accuracy' => str_replace('%', '', str_get_html($data)->find('h5[plaintext^=Accuracy]', 0)->next_sibling()->plaintext),
-    'time-held' => str_get_html($data)->find('h5[plaintext^=Time held]', 0)->next_sibling()->plaintext
+    'kills' => (int)str_get_html($data)->find('h5[plaintext^=Kills]', 0)->next_sibling()->plaintext,
+    'headshots' => (int)str_get_html($data)->find('h5[plaintext^=Headshots]', 0)->next_sibling()->plaintext,
+    'accuracy' => (float)str_replace('%', '', str_get_html($data)->find('h5[plaintext^=Accuracy]', 0)->next_sibling()->plaintext),
+    'time-held' => (string)str_get_html($data)->find('h5[plaintext^=Time held]', 0)->next_sibling()->plaintext
   ),
   'recent-activity' => getRecentActivity($data)
 );
