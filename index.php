@@ -2,9 +2,6 @@
 // Require SimpleHTMLDOM library
 require('lib/simplehtmldom.php');
 
-// Set default timezone for date()
-date_default_timezone_set("Europe/Berlin");
-
 // Set default headers
 $defaultHeaders = array(
   'Pragma: no-cache',
@@ -284,6 +281,11 @@ if (!file_exists('config.json')) {
 // Load credentials from config
 $username = $config->username;
 $password = $config->password;
+
+// In case there is no default TZ, set one
+if (!@date_default_timezone_get()) {
+  date_default_timezone_set("Europe/Berlin");
+}
 
 // Check for possible "target" argument
 $target = (isset($argv[1])) ? $argv[1] : "";
