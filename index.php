@@ -307,6 +307,12 @@ if (checkForEmptyData($data)) {
   }
 }
 
+// Check for occurance of sectionBlockedStats container
+if (!empty(str_get_html($data)->find('#sectionBlockedStats'))) {
+  error('Error: Player/target is not sharing game stats.');
+}
+
+// Parse data and store in temporary object
 $parsed = array(
   'general' => array(
     'rank' => (int)str_get_html($data)->find('.rankHex h3', 0)->innertext,
@@ -404,7 +410,7 @@ $parsed = array(
   'recent-activity' => getRecentActivity($data)
 );
 
-// Print out stored
+// Encode data object as JSON and print out
 echo json_encode($parsed, JSON_PRETTY_PRINT);
 
 // Exit without errors
