@@ -1,0 +1,16 @@
+{
+  "name": "socialclubparser",
+  "version": "1.0.0",
+  "description": "Parse user information from the SocialClub website.",
+  "main": "index.js",
+  "author": "Harmjan Kors",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.1.4",
+    "cheerio": "^0.22.0",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "request": "^2.79.0",
+    "tough-cookie-filestore": "0.0.1"
+  }
+}
