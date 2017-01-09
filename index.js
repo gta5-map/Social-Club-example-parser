@@ -1,6 +1,13 @@
-var USERNAME = 'YOUR_SOCIALCLUB_USERNAME';
-var PASSWORD = 'YOUR_SOCIALCLUB_PASSWORD';
+#!/usr/bin/env node
 
+// Load neccessary modules
+var async = require('async');
+var cheerio = require('cheerio');
+var fs = require('fs');
+var request = require('request');
+var FileCookieStore = require('tough-cookie-filestore');
+
+// Array with default headers
 var DEFAULT_HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
     'Accept-Encoding': 'gzip, deflate, br',
@@ -11,13 +18,13 @@ var DEFAULT_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
 };
 
-var async = require('async');
-var cheerio = require('cheerio');
-var fs = require('fs');
-var request = require('request');
-var FileCookieStore = require('tough-cookie-filestore');
-
-/* -------------------------------------- */
+// Check if config file exists
+if (fs.existsSync('config.json')) {
+    var config = require('./config.json');
+} else {
+    console.error('[Error] Couldn\'t find configuration file "config.json"');
+    process.exit(1);
+}
 
 /**
  * Start the script.
@@ -229,8 +236,8 @@ function signIn(cookieJar, verificationToken, callback) {
 
     var options = {
         body: {
-            'login': USERNAME,
-            'password': PASSWORD,
+            'login': config.username,
+            'password': config.password,
             'rememberme': true
         },
         gzip: true,
@@ -335,7 +342,7 @@ function getRecentActivity($) {
  * @param {RequestJar} cookieJar - The cookie jar including the "AuthenticateCookie" cookie.
  */
 function printActualInformation(cookieJar) {
-    var target = process.argv[2] ? process.argv[2] : USERNAME;
+    var target = process.argv[2] ? process.argv[2] : config.username;
 
     var headers = DEFAULT_HEADERS;
     //headers['Accept'] = 'application/json, text/javascript, */*; q=0.01';
