@@ -172,4 +172,4 @@ node index.js RestlessNarwhal
 
 ## Version
 
-1.4
+1.4.0
