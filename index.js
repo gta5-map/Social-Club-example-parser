@@ -492,7 +492,7 @@ function printActualInformation(cookieJar) {
         };
 
         // Print the actual information object
-        console.log(obj);
+        console.log(JSON.stringify(obj, null, 4));
     });
 }
 
