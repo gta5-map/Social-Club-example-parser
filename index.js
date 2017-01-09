@@ -27,6 +27,18 @@ if (fs.existsSync('config.json')) {
 }
 
 /**
+ * Write debug message if debug mode is enabled
+ * in configuration file
+ * @param  {String} msg
+ * @return {String}
+ */
+function debug(msg){
+     if (config.debug) {
+        console.log(msg);
+     }
+}
+
+/**
  * Start the script.
  */
 function start(forceNewLogin) {
@@ -39,7 +51,7 @@ function start(forceNewLogin) {
         return;
     }
 
-    console.log('Checking for existing cookies and verification token');
+    debug('Checking for existing cookies and verification token');
 
     async.parallel({
         getCookiesFile: function (done) {
@@ -63,13 +75,13 @@ function start(forceNewLogin) {
 
         // If one or both files doesn't exist, renew the authentication
         if (!cookieFileData || !verificationToken) {
-            console.log('No existing cookies and/or verification token found');
+            debug('No existing cookies and/or verification token found');
 
             start(true);
             return;
         }
 
-        console.log('Existing cookies and verification token found');
+        debug('Existing cookies and verification token found');
 
         try {
 
@@ -80,7 +92,7 @@ function start(forceNewLogin) {
 
             // Sometimes an exception is thrown because the cookies.json file contains invalid JSON for some reason
             if (err instanceof SyntaxError) {
-                console.log('Existing cookies are unreadable');
+                debug('Existing cookies are unreadable');
 
                 // So renew the authentication in that case
                 start(true);
@@ -131,7 +143,7 @@ function parseInteger(input) {
  * @param {function} callback - Function that gets called when the authentication is renewed.
  */
 function renewAuthentication(callback) {
-    console.log('Renewing the authentication');
+    debug('Renewing the authentication');
 
     createCookiesJar(function (cookieJar) {
         getVerificationToken(cookieJar, function (cookieJar, verificationToken) {
@@ -191,7 +203,7 @@ function getVerificationToken(cookieJar, callback) {
         url: 'https://socialclub.rockstargames.com/profile/signin'
     };
 
-    console.log('Send GET-request to: ' + options.url);
+    debug('Send GET-request to: ' + options.url);
     request.get(options, function (err, response, body) {
         if (err) {
             console.error(err);
@@ -211,7 +223,7 @@ function getVerificationToken(cookieJar, callback) {
             return;
         }
 
-        console.log('Retrieved verification token: ' + verificationToken);
+        debug('Retrieved verification token: ' + verificationToken);
 
         // Remember the verification token
         rememberVerificationToken(verificationToken, function () {
@@ -247,7 +259,7 @@ function signIn(cookieJar, verificationToken, callback) {
         url: 'https://socialclub.rockstargames.com/profile/signincompact'
     };
 
-    console.log('Send POST-request to: ' + options.url);
+    debug('Send POST-request to: ' + options.url);
     request.post(options, function (err, response, body) {
         if (err) {
             console.error(err);
@@ -354,7 +366,7 @@ function printActualInformation(cookieJar) {
         url: 'http://socialclub.rockstargames.com/games/gtav/career/overviewAjax?character=Freemode&nickname=' + target + '&slot=Freemode&gamerHandle=&gamerTag=&_=' + getTimestamp()
     };
 
-    console.log('Send GET-request to: ' + options.url);
+    debug('Send GET-request to: ' + options.url);
     request.get(options, function (err, response, body) {
         if (err) {
             console.error(err);
