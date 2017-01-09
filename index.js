@@ -345,8 +345,6 @@ function printActualInformation(cookieJar) {
     var target = process.argv[2] ? process.argv[2] : config.username;
 
     var headers = DEFAULT_HEADERS;
-    //headers['Accept'] = 'application/json, text/javascript, */*; q=0.01';
-    //headers['Content-Type'] = 'application/json; charset=UTF-8';
 
     var options = {
         gzip: true,
