@@ -4,7 +4,7 @@
   "description": "Parse user information from the SocialClub website.",
   "main": "index.js",
   "author": "Harmjan Kors",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "async": "^2.1.4",
     "cheerio": "^0.22.0",
@@ -12,5 +12,26 @@
     "http": "0.0.0",
     "request": "^2.79.0",
     "tough-cookie-filestore": "0.0.1"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gta5-map/Social-Club-example-parser.git"
+  },
+  "keywords": [
+    "gta",
+    "rockstar",
+    "grand",
+    "theft",
+    "auto",
+    "social",
+    "club"
+  ],
+  "bugs": {
+    "url": "https://github.com/gta5-map/Social-Club-example-parser/issues"
+  },
+  "homepage": "https://github.com/gta5-map/Social-Club-example-parser#readme"
 }
