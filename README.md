@@ -1,7 +1,7 @@
 SocialClub-example-parser
 =========================
 
-Simple example parser for Rockstar's Social Club written in PHP that makes use of [gta5-map/Social-Club-API-cheat-sheet](https://github.com/gta5-map/Social-Club-API-cheat-sheet).
+Simple example parser for Rockstar's Social Club written in Javascript that makes use of [gta5-map/Social-Club-API-cheat-sheet](https://github.com/gta5-map/Social-Club-API-cheat-sheet).
 
 ## Installation
 
